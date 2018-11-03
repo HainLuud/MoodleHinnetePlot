@@ -1,8 +1,8 @@
 Vaja on:
-[] Programmi lıik mis  loeb millistest kursustest vıtab inimene osa
-j‰rjendit, milles oleks kıikide osavıetavate kursuste id-d (sest selle saab liita https://moodle.ut.ee/grade/report/user/index.php?-le otsa)
+[] Programmi l√µik mis  loeb millistest kursustest v√µtab inimene osa
+j√§rjendit, milles oleks k√µikide osav√µetavate kursuste id-d (sest selle saab liita https://moodle.ut.ee/grade/report/user/index.php?-le otsa) ### Hain v√µtab selle osa praegu ette
 
-[] Programmi lıik mis  loeb igalt kursuse hinnetelehelt tema praeguse kogupunktisumma protsendi ja teiste kogupunktisumma protsendi
-teha nendest punktisummadest nt tupledest koosneb j‰rjend
+[] Programmi l√µik mis  loeb igalt kursuse hinnetelehelt tema praeguse kogupunktisumma protsendi ja teiste kogupunktisumma protsendi
+teha nendest punktisummadest nt tupledest koosneb j√§rjend
 
-[] Matplotlib programm, mis teeks tulpdiagrammi vıttes selle tuple-dest koosneva j‰rjendi (x,y,z) kus x = sinu koondhinde protsent, y = kursuse keskmine koondhinde protsent, z = aine (x-teljele l‰heks aine ja y teljele 100% skaala)
+[] Matplotlib programm, mis teeks tulpdiagrammi v√µttes selle tuple-dest koosneva j√§rjendi (x,y,z) kus x = sinu koondhinde protsent, y = kursuse keskmine koondhinde protsent, z = aine (x-teljele l√§heks aine ja y teljele 100% skaala)
