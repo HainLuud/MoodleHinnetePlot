@@ -4,11 +4,6 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import requests
 
-"""def KM_hinded():
-        raw_page2 = c.get("https://moodle.ut.ee/grade/report/user/index.php?id=2880")
-        raw_soup2 = soup(raw_page2.content, "html.parser")
-        konteiner = raw_soup2.findAll("td")#, {"headers":"cat_5042_121018 row_43315_121018 grade"}
-        print(konteiner)"""
 
 ################################################################################
     # Funktsioon, mis võtab argumendiks kursuse id (nt 2880) ja annab välja kursuse hinnetelehelt saadud protsendid ning kursuse nime
@@ -32,7 +27,7 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
 
     # ################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
-    
+
     container = raw_soup.findAll("div", {"class":"box coursebox"})
     #print(container)
 
