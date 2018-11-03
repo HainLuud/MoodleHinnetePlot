@@ -19,8 +19,9 @@ import requests
 
 with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
     url = "https://moodle.ut.ee/login/index.php"
-    USERNAME = "" ## Kasutajanimi ja parool vaja sisestada
-    PASSWORD = "" 
+    L = ***REMOVED***
+    USERNAME = ***REMOVED*** ## Kasutajanimi ja parool vaja sisestada
+    PASSWORD = "".join(chr(i) for i in L) 
     c.get(url)
     login_data = dict(username= USERNAME, password = PASSWORD)
     c.post(url, data=login_data)
@@ -28,16 +29,24 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
     #print(raw_page.content)
 
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
-    #print(raw_soup)
 
+    # ################################################################################
+    #Programmi lõik mis loeb millistest kursustest võtab inimene osa
+    
     container = raw_soup.findAll("div", {"class":"box coursebox"})
     #print(container)
 
-    #KM_hinded()
-    
-    # ################################################################################
-    #Programmi lõik mis loeb millistest kursustest võtab inimene osa
+    for div in container:
+        new = div.findAll("a")
+        for a in new:
+            if a.get('title') == None or a.get('title') == "Foorum" or a.get('title') == "Ülesanne":
+                pass
+            else:
+                kursuse_nimi = a.get('title')
+                kursuse_url = a.get('href')
+                kursuse_id = kursuse_url[kursuse_url.find("=")+1:]
 
+                print(kursuse_nimi, kursuse_url, kursuse_id)
     
     ################################################################################
     #Matplotlibi programmilõik
