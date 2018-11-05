@@ -11,7 +11,11 @@ def get_hinded(nimi, url, id):
     raw_hinded = c.get("https://moodle.ut.ee/grade/report/user/index.php?id="+id)
     hinded_soup = soup(raw_hinded.content, "html.parser")
 
-    lõpphinde_container = hinded_soup.findAll("tr")[-1]
+    lõpphinde_container = hinded_soup.findAll("tr")[-1].find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"})
+    
+    if nimi == "Programmeerimine (LTAT.03.001)":
+        lõpphinde_container = hinded_soup.findAll("tr")[-2]
+
     print(nimi)
     print(lõpphinde_container)
     print("\n")
@@ -54,7 +58,7 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
                 #print(kursuse_nimi, kursuse_url, kursuse_id)
                 get_hinded(kursuse_nimi, kursuse_url, kursuse_id)
 
-    #get_hinded("Matemaatiline maailmapilt (MTMM.00.342)", "https://moodle.ut.ee/course/view.php?id=3403", "3403")
+    #get_hinded("Programmeerimine (LTAT.03.001)", "https://moodle.ut.ee/grade/report/user/index.php?id=500", "3403")
     
     ################################################################################
     #Matplotlibi programmilõik
