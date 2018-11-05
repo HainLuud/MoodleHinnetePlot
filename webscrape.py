@@ -7,7 +7,17 @@ import requests
 
 ################################################################################
     # Funktsioon, mis võtab argumendiks kursuse id (nt 2880) ja annab välja kursuse hinnetelehelt saadud protsendid ning kursuse nime
-    # Hetkel on meile vajalikud id-d [2880, 3403, 500]#
+def get_hinded(nimi, url, id):
+    raw_hinded = c.get("https://moodle.ut.ee/grade/report/user/index.php?id="+id)
+    hinded_soup = soup(raw_hinded.content, "html.parser")
+
+    lõpphinde_container = hinded_soup.findAll("tr")[-1]
+    print(nimi)
+    print(lõpphinde_container)
+    print("\n")
+    
+
+    
 
 ################################################################################
 
@@ -41,7 +51,10 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
                 kursuse_url = a.get('href')
                 kursuse_id = kursuse_url[kursuse_url.find("=")+1:]
 
-                print(kursuse_nimi, kursuse_url, kursuse_id)
+                #print(kursuse_nimi, kursuse_url, kursuse_id)
+                get_hinded(kursuse_nimi, kursuse_url, kursuse_id)
+
+    #get_hinded("Matemaatiline maailmapilt (MTMM.00.342)", "https://moodle.ut.ee/course/view.php?id=3403", "3403")
     
     ################################################################################
     #Matplotlibi programmilõik
