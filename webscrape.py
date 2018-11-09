@@ -12,17 +12,15 @@ def get_hinded(nimi, url, id):
 
     lõpphinde_container = hinded_soup.findAll("tr")[-1]
     
-    #Proovin leida kursuse protsenti
     if lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"}) != None: #Kui on olemas protsent
         sinu_protsent = lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"}).text
         kursuse_protsent = lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-average"}).text
-        
         if ")" in kursuse_protsent:
             kursuse_protsent = kursuse_protsent.split("(")[-1][:len(kursuse_protsent)+1]
         elif "%" not  in kursuse_protsent:
             max_punktid = float(lõpphinde_container.find("td",{"class":"level1 levelodd oddd1 baggt b2b itemcenter column-range"}).text[2:])
             kursuse_protsent = str(round((float(kursuse_protsent)/max_punktid )*100)) + " %"
-        produkt.append([sinu_protsent, kursuse_protsent, nimi])
+        produkt.append((nimi, sinu_protsent, kursuse_protsent))
 
     else: #Kui protsenti pole kirjas
         punktide_var1 = lõpphinde_container.find("td",{"class":"level1 levelodd oddd1 baggt b2b itemcenter column-grade"})
@@ -40,36 +38,46 @@ def get_hinded(nimi, url, id):
                 kursuse_protsent = (kursuse_keskmine/max_punktid)*100
 
             except:
-                sinu_protsent, kursuse_protsent = "0","0"
-                produkt.append([sinu_protsent, kursuse_protsent, nimi])
+                sinu_protsent, kursuse_protsent = "-","-"
+                produkt.append((nimi, sinu_protsent, kursuse_protsent))
         else:
-            sinu_protsent, kursuse_protsent = "0","0"
-            produkt.append([sinu_protsent, kursuse_protsent, nimi])
+            sinu_protsent, kursuse_protsent = "-","-"
+            produkt.append((nimi, sinu_protsent, kursuse_protsent))
     
     if nimi == "Programmeerimine (LTAT.03.001)": #Pagana proge ainel on erinevas kohas jooksvad punktid
-        hinded = hinded_soup.findAll("tr")[-2]
+        hinded = hinded_soup.findAll("tr")[-3]
         punktid = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-grade"}).text)
         max_punktid = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-range"}).text[2:])
         kursuse_keskmine = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-average"}).text)
         sinu_protsent = str(round((punktid/max_punktid)*100)) + " %"
         kursuse_protsent = str(round((kursuse_keskmine/max_punktid)*100)) + " %"
         del produkt[-1]
-        produkt.append([sinu_protsent, kursuse_protsent, nimi])
+        produkt.append((nimi, sinu_protsent, kursuse_protsent))
     
     return produkt
+    
 
 ################################################################################
 
 with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
     url = "https://moodle.ut.ee/login/index.php"
-    USERNAME = input("Kasutajaimi: ") ## Kasutajanimi ja parool vaja sisestada
-    PASSWORD = input("Parool: ") 
+    L = ***REMOVED***
+    USERNAME = "***REMOVED***" ## Kasutajanimi ja parool vaja sisestada
+    PASSWORD = "".join(chr(i) for i in L) 
+    c.get(url)
+    login_data = dict(username= USERNAME, password = PASSWORD)
+    c.post(url, data=login_data)
+    raw_page = c.get("https://moodle.ut.ee/my/")
+    raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
+
+    #################################################################################
+    #Programmi lõik mis loeb millistest kursustest võtab inimene osa
 
 
     #################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
     container = raw_soup.findAll("div", {"class":"box coursebox"})
-
+    #print(container)
     kõik_vajalik = []
 
     for div in container:
@@ -95,9 +103,10 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
 from matplot import tulpdiagram #tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
 tulpdiagram(kõik_sinu_protsendid, kõik_kursuste_protsendid, kõik_kursused)
 
-    #print(container)
-
-    #KM_hinded()
+                #print(kursuse_nimi, kursuse_url, kursuse_id)
+                kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
+    print(kõik_vajalik)
+    #get_hinded("Programmeerimine (LTAT.03.001)", "https://moodle.ut.ee/grade/report/user/index.php?id=500", "3403")
     
 
 
