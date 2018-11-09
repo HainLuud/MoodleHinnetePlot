@@ -74,7 +74,6 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
 
     container = raw_soup.findAll("div", {"class":"box coursebox"})
-    #print(container)
     kõik_vajalik = []
 
     for div in container:
@@ -90,7 +89,6 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
                 #print(kursuse_nimi, kursuse_url, kursuse_id)
                 kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
     print(kõik_vajalik)
-    #get_hinded("Programmeerimine (LTAT.03.001)", "https://moodle.ut.ee/grade/report/user/index.php?id=500", "3403")
     
     ################################################################################
     #Matplotlibi programmilõik
