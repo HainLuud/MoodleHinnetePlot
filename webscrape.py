@@ -61,9 +61,8 @@ def get_hinded(nimi, url, id):
 
 with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
     url = "https://moodle.ut.ee/login/index.php"
-    L = [44, 84, 97, 108, 108, 83, 104, 105, 112, 115, 82, 97, 99, 101, 115, 46]
-    USERNAME = "hainluud" ## Kasutajanimi ja parool vaja sisestada
-    PASSWORD = "".join(chr(i) for i in L) 
+    USERNAME = input("Kasutajaimi: ") ## Kasutajanimi ja parool vaja sisestada
+    PASSWORD = input("Parool: ") 
     c.get(url)
     login_data = dict(username= USERNAME, password = PASSWORD)
     c.post(url, data=login_data)
