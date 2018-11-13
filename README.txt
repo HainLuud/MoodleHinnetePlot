@@ -8,4 +8,4 @@ teha nendest punktisummadest nt tupledest koosneb järjend ### Valmis
 [x] Matplotlib programm, mis teeks tulpdiagrammi võttes selle tuple-dest koosneva järjendi (x,y,z) kus x = sinu koondhinde protsent, y = kursuse keskmine koondhinde protsent, z = aine (x-teljele läheks aine ja y teljele 100% skaala)
 Valmis
 
-[] Kahe koodi ühendamine ning vigade silumine
+[x] Kahe koodi ühendamine ning vigade silumine
