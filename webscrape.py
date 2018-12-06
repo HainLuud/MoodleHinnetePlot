@@ -8,8 +8,9 @@ def get_hinded(nimi, url, id):
     produkt = [] # (kursuse nimi, sinu tulemus %, kursuse keskmine %)
     raw_hinded = c.get("https://moodle.ut.ee/grade/report/user/index.php?id="+id)
     hinded_soup = soup(raw_hinded.content, "html.parser")
-
+    #print(hinded_soup)
     lõpphinde_container = hinded_soup.findAll("tr")[-1]
+    
     
     #Proovin leida kursuse protsenti
     if lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"}) != None: #Kui on olemas protsent
@@ -84,8 +85,10 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
                 kursuse_nimi = a.get('title')
                 kursuse_url = a.get('href')
                 kursuse_id = kursuse_url[kursuse_url.find("=")+1:]
-                kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
-    
+                try:
+                    kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
+                except:
+                    pass
     # Joonestamise eelne järjendite korrastamine
     kõik_sinu_protsendid = list(map(lambda y: round(float(re.sub(r"[% ()]", "", y))),list(map(lambda x: x[0][0], kõik_vajalik))))
     kõik_kursused = list(map(lambda x: re.sub("[\(\[].*?[\)\]]", "",x[0][2]), kõik_vajalik))
