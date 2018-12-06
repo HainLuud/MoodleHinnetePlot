@@ -61,17 +61,23 @@ def get_hinded(nimi, url, id):
 
 with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
     url = "https://moodle.ut.ee/login/index.php"
-    USERNAME = input("Kasutajaimi: ") ## Kasutajanimi ja parool vaja sisestada
-    PASSWORD = input("Parool: ") 
+    USERNAME = open("runtime.txt").read().split("\n")[0] ## Kasutajanimi ja parool vaja sisestada
+    PASSWORD = open("runtime.txt").read().split("\n")[1]
     c.get(url)
     login_data = dict(username= USERNAME, password = PASSWORD)
     c.post(url, data=login_data)
     raw_page = c.get("https://moodle.ut.ee/my/")
+<<<<<<< HEAD
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
 
     #################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
 
+=======
+    print(raw_page)
+    raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks 
+                                                     #ning saame supi funktsioone kasutada (nt findAll)#
+>>>>>>> half
 
     #################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
@@ -99,9 +105,10 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
     
 ################################################################################
 #Matplotlibi programmilõik
-from matplot import tulpdiagram #tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
+"""from matplot import tulpdiagram #tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
 tulpdiagram(kõik_sinu_protsendid, kõik_kursuste_protsendid, kõik_kursused)
 
+<<<<<<< HEAD
                 #print(kursuse_nimi, kursuse_url, kursuse_id)
                 kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
     print(kõik_vajalik)
@@ -112,6 +119,9 @@ tulpdiagram(kõik_sinu_protsendid, kõik_kursuste_protsendid, kõik_kursused)
 
 
 
+=======
+"""
+>>>>>>> half
 
     
 
