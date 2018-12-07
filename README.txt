@@ -1,6 +1,6 @@
 Vaja on:
 [x] Programmi lik mis  loeb millistest kursustest võtab inimene osa
-järjendit, millões oleks kõikide osavõetavate kursuste id-d (sest selle saab liita https://moodle.ut.ee/grade/report/user/index.php?-le otsa) ### Valmis
+järjendit, milles oleks kõikide osavõetavate kursuste id-d (sest selle saab liita https://moodle.ut.ee/grade/report/user/index.php?-le otsa) ### Valmis
 
 [x] Programmi lõik mis  loeb igalt kursuse hinnetelehelt tema praeguse kogupunktisumma protsendi ja teiste kogupunktisumma protsendi
 teha nendest punktisummadest nt tupledest koosneb järjend ### Valmis
