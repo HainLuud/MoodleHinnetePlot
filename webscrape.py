@@ -74,20 +74,16 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
     login_data = dict(username= USERNAME, password = PASSWORD, logintoken=LOGINTOKEN)
     c.post(url, data=login_data)
     raw_page = c.get("https://moodle.ut.ee/my/")
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
 
     #################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
 
-=======
     print(raw_page)
-=======
->>>>>>> Logintoken implemented
+
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks 
                                                      #ning saame supi funktsioone kasutada (nt findAll)#
->>>>>>> half
 
     #################################################################################
     #Programmi lõik mis loeb millistest kursustest võtab inimene osa
@@ -118,20 +114,7 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
 """from matplot import tulpdiagram #tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
 tulpdiagram(kõik_sinu_protsendid, kõik_kursuste_protsendid, kõik_kursused)
 
-<<<<<<< HEAD
-                #print(kursuse_nimi, kursuse_url, kursuse_id)
-                kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
-    print(kõik_vajalik)
-    #get_hinded("Programmeerimine (LTAT.03.001)", "https://moodle.ut.ee/grade/report/user/index.php?id=500", "3403")
-    
-
-
-
-
-
-=======
 """
->>>>>>> half
 
     
 
