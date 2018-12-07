@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup as soup
 import requests
 import re
+import lxml
+import sys
 
 
 ################################################################################
@@ -61,12 +63,18 @@ def get_hinded(nimi, url, id):
 
 with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
     url = "https://moodle.ut.ee/login/index.php"
-    USERNAME = open("runtime.txt").read().split("\n")[0] ## Kasutajanimi ja parool vaja sisestada
-    PASSWORD = open("runtime.txt").read().split("\n")[1]
-    c.get(url)
-    login_data = dict(username= USERNAME, password = PASSWORD)
+    USERNAME = sys.argv[1]   ## Kasutajanime ja parooli võtab käsirealt
+    PASSWORD = sys.argv[2]
+    login_page = c.get(url)
+    lxml_login_page = lxml.html.fromstring(login_page.content)
+    LOGINTOKEN = lxml_login_page.xpath('//input[@name="logintoken"]/@value')[0]
+    #print("This logintoken",LOGINTOKEN)
+
+    
+    login_data = dict(username= USERNAME, password = PASSWORD, logintoken=LOGINTOKEN)
     c.post(url, data=login_data)
     raw_page = c.get("https://moodle.ut.ee/my/")
+<<<<<<< HEAD
 <<<<<<< HEAD
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
 
@@ -75,6 +83,8 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
 
 =======
     print(raw_page)
+=======
+>>>>>>> Logintoken implemented
     raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks 
                                                      #ning saame supi funktsioone kasutada (nt findAll)#
 >>>>>>> half
