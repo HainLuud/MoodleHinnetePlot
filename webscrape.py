@@ -1,19 +1,21 @@
 from bs4 import BeautifulSoup as soup
 import requests
 import re
-import lxml
-import sys
-
+import lxml.html
+from matplot import tulpdiagram
 
 ################################################################################
 # Funktsioon, mis võtab argumendiks kursuse id ja annab välja kursuse protsendid ning kursuse nime
+
 def get_hinded(nimi, url, id):
     produkt = [] # (kursuse nimi, sinu tulemus %, kursuse keskmine %)
     raw_hinded = c.get("https://moodle.ut.ee/grade/report/user/index.php?id="+id)
     hinded_soup = soup(raw_hinded.content, "html.parser")
-
+    #print(hinded_soup)
     lõpphinde_container = hinded_soup.findAll("tr")[-1]
     
+    
+    #Proovin leida kursuse protsenti
     if lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"}) != None: #Kui on olemas protsent
         sinu_protsent = lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-percentage"}).text
         kursuse_protsent = lõpphinde_container.find("td", {"class":"level1 levelodd oddd1 baggt b2b itemcenter column-average"}).text
@@ -47,7 +49,7 @@ def get_hinded(nimi, url, id):
             produkt.append((nimi, sinu_protsent, kursuse_protsent))
     
     if nimi == "Programmeerimine (LTAT.03.001)": #Pagana proge ainel on erinevas kohas jooksvad punktid
-        hinded = hinded_soup.findAll("tr")[-3]
+        hinded = hinded_soup.findAll("tr")[-2]
         punktid = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-grade"}).text)
         max_punktid = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-range"}).text[2:])
         kursuse_keskmine = float(hinded.find("td",{"class":"level2 leveleven item b1b itemcenter column-average"}).text)
@@ -55,40 +57,53 @@ def get_hinded(nimi, url, id):
         kursuse_protsent = str(round((kursuse_keskmine/max_punktid)*100)) + " %"
         del produkt[-1]
         produkt.append((nimi, sinu_protsent, kursuse_protsent))
-    
     return produkt
-    
 
 ################################################################################
+# Filteerimisfunktsioon viimaste muudatuste jaoks
 
-with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle sessiooni jooksul#
+def filtreeri(kõik, mida): #(mida = 0 => kursuse nimi, mida = 1 => sinu %, mida = 2 => kursuse %)
+    filtreeritud = []
+
+    if mida == 0:
+        for i in kõik:
+            a = i[0][0]
+            a = a[:a.index("(")-1].upper()
+            lühend = ""
+            for i in a.split(" "):
+                lühend += i[0]
+            filtreeritud.append(lühend)
+
+    else:
+        for i in kõik:
+            a = i[0][mida]
+            if a != "-":
+                a = float(a.replace("%", "").replace(")","").strip())
+            else:
+                a = 0
+            filtreeritud.append(a)
+
+    return filtreeritud
+
+################################################################################
+# Põhiprogrammi osa (sisselogimine, registreeritud kursuste otsimine)
+
+with requests.Session() as c: 
     url = "https://moodle.ut.ee/login/index.php"
-    USERNAME = sys.argv[1]   ## Kasutajanime ja parooli võtab käsirealt
-    PASSWORD = sys.argv[2]
     login_page = c.get(url)
     lxml_login_page = lxml.html.fromstring(login_page.content)
     LOGINTOKEN = lxml_login_page.xpath('//input[@name="logintoken"]/@value')[0]
-    #print("This logintoken",LOGINTOKEN)
-
     
     login_data = dict(username= USERNAME, password = PASSWORD, logintoken=LOGINTOKEN)
     c.post(url, data=login_data)
     raw_page = c.get("https://moodle.ut.ee/my/")
 
-    raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks ning saame supi funktsioone kasutada (nt findAll)#
+    raw_soup = soup(raw_page.content, "html.parser") 
 
     #################################################################################
-    #Programmi lõik mis loeb millistest kursustest võtab inimene osa
+    #Siin loeb millistest kursustest võtab inimene osa
 
-    print(raw_page)
-
-    raw_soup = soup(raw_page.content, "html.parser") #Muudab puhta html-i supi objektiks 
-                                                     #ning saame supi funktsioone kasutada (nt findAll)#
-
-    #################################################################################
-    #Programmi lõik mis loeb millistest kursustest võtab inimene osa
     container = raw_soup.findAll("div", {"class":"box coursebox"})
-    #print(container)
     kõik_vajalik = []
 
     for div in container:
@@ -100,21 +115,22 @@ with requests.Session() as c: #Funktsiooni kutsed peaksid kõik toimuma selle se
                 kursuse_nimi = a.get('title')
                 kursuse_url = a.get('href')
                 kursuse_id = kursuse_url[kursuse_url.find("=")+1:]
-                kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
+                try:
+                    kõik_vajalik.append(get_hinded(kursuse_nimi, kursuse_url, kursuse_id))
+                except:
+                    pass
     
-    # Joonestamise eelne järjendite korrastamine
-    kõik_sinu_protsendid = list(map(lambda y: round(float(re.sub(r"[% ()]", "", y))),list(map(lambda x: x[0][0], kõik_vajalik))))
-    kõik_kursused = list(map(lambda x: re.sub("[\(\[].*?[\)\]]", "",x[0][2]), kõik_vajalik))
-    for i in range(len(kõik_kursused)):
-        kõik_kursused[i] = "".join(list(map(lambda x: x[0].upper(),kõik_kursused[i][:-1].split(" "))))
-    kõik_kursuste_protsendid = list(map(lambda y: round(float(re.sub(r"[% ()]", "", y))),list(map(lambda x: x[0][1], kõik_vajalik))))
+    # Andmete eraldamine eraldi järjenditesse
     
-################################################################################
-#Matplotlibi programmilõik
-"""from matplot import tulpdiagram #tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
+    kõik_sinu_protsendid = filtreeri(kõik_vajalik, 1)
+    kõik_kursused = filtreeri(kõik_vajalik, 0)
+    kõik_kursuste_protsendid = filtreeri(kõik_vajalik, 2)
+
+################################################################################   
+# Matplotlibi programmilõik
+
 tulpdiagram(kõik_sinu_protsendid, kõik_kursuste_protsendid, kõik_kursused)
 
-"""
 
     
 
