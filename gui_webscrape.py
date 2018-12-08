@@ -1,10 +1,14 @@
 
 from tkinter import *
-from PIL import ImageTk,Image 
+from PIL import ImageTk,Image
+import time
+
 #ONCLICK käivita siia tuleb siis link ülejäänud koodile teha
 def clicked():
     #Asenda pilt
-    vlabel.configure(image=photo1)
+
+    jooksuta()
+    vlabel.configure(image="graafik.png")
 
 #loob akna
 window = Tk()
@@ -23,7 +27,13 @@ frame_image.pack(side=LEFT)
 lbl1 = Label(frame_labels, text="Kasutajanimi:")
 txt1 = Entry(frame_labels,width=30)
 lbl2 = Label(frame_labels, text="Parool")
-txt2 = Entry(frame_labels,width=30)
+txt2 = Entry(frame_labels,width=30, show="*")
+
+#Kutse scriptile
+def jooksuta():
+    myvars = {"USERNAME":txt1.get() , "PASSWORD": txt2.get()}
+    exec(open("webscrape.py", "r", encoding="UTF-8").read(),myvars)
+
 #Kleepimine  aknale
 lbl1.pack()
 txt1.pack()
