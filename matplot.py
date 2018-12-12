@@ -7,7 +7,7 @@ import numpy as np
 
 #vastavalt            x             y                z
 def tulpdiagram(sinu_koondhinne, kursuse_keskmine,  kursuse_nimed ):
-
+    
     # Valikulised võib ära kustutada, ei mõjuta koodi tööd
     plt.xlabel('Kursused', fontsize=12) # x telje nimetus
     plt.ylabel('Protsent', fontsize=12) # y telje nimetus

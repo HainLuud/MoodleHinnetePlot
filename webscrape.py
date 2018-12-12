@@ -97,6 +97,7 @@ with requests.Session() as c:
     login_data = dict(username= USERNAME, password = PASSWORD, logintoken=LOGINTOKEN)
     c.post(url, data=login_data)
     raw_page = c.get("https://moodle.ut.ee/my/")
+    
 
     raw_soup = soup(raw_page.content, "html.parser") 
 
