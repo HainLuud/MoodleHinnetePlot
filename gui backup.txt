@@ -1,33 +1,36 @@
+
 from tkinter import *
 from PIL import ImageTk,Image
 import time
 import tkinter.messagebox
 
-
-
-#ONCLICK k√§ivita siia tuleb siis link √ºlej√§√§nud koodile teha ,Scbefx126.
+#ONCLICK k‰ivita siia tuleb siis link ¸lej‰‰nud koodile teha ,Scbefx126.
 def clicked():
     #Asenda pilt
-    viga = jooksuta()
+    jooksuta()
 
-    if not viga:
         #Uuus graaaaaaaafik meeeeeeees
-        photo1 = "graafik.png"
-        photo1 = ImageTk.PhotoImage(Image.open(photo1))
-        vlabel.configure(image=photo1)
-        vlabel.image = photo1
+    photo1 = "graafik.png"
+    photo1 = ImageTk.PhotoImage(Image.open(photo1))
+    vlabel.configure(image=photo1)
+    vlabel.image = photo1
 
 #Kutse scriptile
 def jooksuta():
-    viga = False
-    try:
-        myvars = {"USERNAME":txt1.get() , "PASSWORD": txt2.get()}
-        exec(open("webscrape.py", "r", encoding="UTF-8").read(),myvars)
-    except:
-        tkinter.messagebox.showinfo("T√§helepanu!", "Sisestasid vale kasutajanime v√µi parooli.")
-        viga = True
     
-    return viga
+    
+    #try:
+    myvars = {"USERNAME":txt1.get() , "PASSWORD": txt2.get()}
+    print(myvars)
+    f = open("webscrape.py", "r", encoding="UTF-8")
+    exec(f.read(),myvars)
+    f.close()
+    #except:
+    #f.close()
+    tkinter.messagebox.showinfo("T‰helepanu!", "Sisestasid vale kasutajanime vıi parooli.")
+
+    
+
 #loob akna
 window = Tk()
 window.geometry('970x600')
@@ -49,7 +52,7 @@ frame_vorm.pack(side=BOTTOM,pady=10)
 
 
 # Tutvustav tekst
-tekst = Label(frame_tekst, text="Tere tulemast! \n Programm on m√µeldud selleks,\n et n√§idata teie hinnete seis \n graafiku kujul. \n  Selleks sisestage oma Moodle \n kasutajanimi ja parool.\n Graafiku loomine v√µib v√µtta veits aega!")
+tekst = Label(frame_tekst, text="Tere tulemast! \n Programm on mıeldud selleks,\n et n‰idata teie hinnete seis \n graafiku kujul. \n  Selleks sisestage oma Moodle \n kasutajanimi ja parool.\n Graafiku loomine vıib vıtta veits aega!")
 tekst.pack(pady=20)
 
 
@@ -65,10 +68,10 @@ txt2.pack()
 
 
 #Nupp
-btn = Button(frame_vorm, text="N√§ita graafikut", command=clicked)
+btn = Button(frame_vorm, text="N‰ita graafikut", command=clicked)
 btn.pack()
 
-#N√§htamatu kast et l√ºkata vorm √ºlespoole
+#N‰htamatu kast et l¸kata vorm ¸lespoole
 frame_kast = Frame(frame_vorm, borderwidth="0", relief="ridge") # alam aken vormi jaoks
 frame_kast.pack(side=BOTTOM,pady=100)
 
