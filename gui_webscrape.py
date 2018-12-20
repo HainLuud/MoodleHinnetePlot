@@ -5,7 +5,7 @@ import tkinter.messagebox
 
 
 
-#ONCLICK käivita siia tuleb siis link ülejäänud koodile teha ,Scbefx126.
+#ONCLICK käivita siia tuleb siis link ülejäänud koodile teha
 def clicked():
     #Asenda pilt
     viga = jooksuta()
